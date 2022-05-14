@@ -31,7 +31,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [LoggedFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MoviesFragment : Fragment(R.layout.fragment_movies), View.OnClickListener {
+class MoviesFragment : Fragment(R.layout.fragment_movies), View.OnClickListener, OnMovieListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -65,7 +65,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies), View.OnClickListener 
         super.onViewCreated(view, savedInstanceState)
         rv_movie_list.layoutManager = LinearLayoutManager(requireContext())
         rv_movie_list.setHasFixedSize(true)
-        getMovieData { movies : List<Movie> -> rv_movie_list.adapter = MovieAdapter(movies) }
+        getMovieData { movies : List<Movie> -> rv_movie_list.adapter = MovieAdapter(movies, this) }
     }
 
     private fun getMovieData(callback:(List<Movie>) -> Unit){
@@ -87,5 +87,10 @@ class MoviesFragment : Fragment(R.layout.fragment_movies), View.OnClickListener 
 
     override fun onClick(v: View?) {
         TODO("Not yet implemented")
+    }
+
+    override fun onMovieFavoriteClicked(movie: Movie) {
+        movie.isFavourite = true
+
     }
 }

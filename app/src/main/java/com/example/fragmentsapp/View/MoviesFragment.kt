@@ -1,4 +1,4 @@
-package com.example.fragmentsapp
+package com.example.fragmentsapp.View
 
 import android.content.Context
 import android.os.Bundle
@@ -12,6 +12,9 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.fragmentsapp.MovieAdapter
+import com.example.fragmentsapp.OnMovieListener
+import com.example.fragmentsapp.R
 import com.example.fragmentsapp.model.Movie
 import com.example.fragmentsapp.model.MovieResponse
 import com.example.fragmentsapp.services.MovieApiInterface
@@ -65,21 +68,14 @@ class MoviesFragment : Fragment(R.layout.fragment_movies), View.OnClickListener,
         super.onViewCreated(view, savedInstanceState)
         rv_movie_list.layoutManager = LinearLayoutManager(requireContext())
         rv_movie_list.setHasFixedSize(true)
-        getMovieData { movies : List<Movie> -> rv_movie_list.adapter = MovieAdapter(movies, this) }
+        val activity = (requireActivity() as MoviesActivity)
+        activity.movieViewModel.popularMovies.observe(requireActivity()){
+            rv_movie_list.adapter = MovieAdapter(it, this)
+        }
+        activity.movieViewModel.getPopular()
     }
 
-    private fun getMovieData(callback:(List<Movie>) -> Unit){
-        val apiService = MovieApiService.getInstance().create(MovieApiInterface::class.java)
-        apiService.getPopularList().enqueue(object: Callback<MovieResponse> {
-            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
 
-            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
-                return callback(response.body()!!.movies)
-            }
-        })
-    }
 
     companion object {
 
@@ -91,6 +87,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies), View.OnClickListener,
 
     override fun onMovieFavoriteClicked(movie: Movie) {
         movie.isFavourite = true
-
+        val activity = (requireActivity() as MoviesActivity)
+        activity.movieViewModel.updateFavorites(movie)
     }
 }

@@ -1,5 +1,10 @@
 package com.example.fragmentsapp.services
 
+import com.example.fragmentsapp.model.Movie
+import com.example.fragmentsapp.model.MovieResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -17,6 +22,8 @@ class MovieApiService {
         }
             return retrofit!!
         }
+
+
 
     }
 }

@@ -1,16 +1,20 @@
-package com.example.fragmentsapp
+package com.example.fragmentsapp.View
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.fragmentsapp.MovieAdapter
+import com.example.fragmentsapp.OnMovieListener
+import com.example.fragmentsapp.R
+import com.example.fragmentsapp.model.Movie
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_favorites.*
+import kotlinx.android.synthetic.main.fragment_movies.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,7 +26,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [LoggedFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class LoggedFragment : Fragment(R.layout.fragment_logged), View.OnClickListener {
+class FavMoviesFragment : Fragment(R.layout.fragment_favorites), View.OnClickListener, OnMovieListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -49,14 +53,16 @@ class LoggedFragment : Fragment(R.layout.fragment_logged), View.OnClickListener 
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_logged, container, false)
+        return inflater.inflate(R.layout.fragment_favorites, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<Button>(R.id.continuar).setOnClickListener {
-            val intent = Intent(this.context, MoviesActivity::class.java)
-            startActivity(intent)
+        rv_fav_movie_list.layoutManager = LinearLayoutManager(requireContext())
+        rv_fav_movie_list.setHasFixedSize(true)
+        val activity = (requireActivity() as MoviesActivity)
+        activity.movieViewModel.favoriteMovies.observe(requireActivity()){
+            rv_fav_movie_list.adapter = MovieAdapter(it, this )
         }
     }
 
@@ -65,6 +71,10 @@ class LoggedFragment : Fragment(R.layout.fragment_logged), View.OnClickListener 
     }
 
     override fun onClick(v: View?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onMovieFavoriteClicked(movie: Movie) {
         TODO("Not yet implemented")
     }
 }

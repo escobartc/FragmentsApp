@@ -1,15 +1,14 @@
-package com.example.fragmentsapp
+package com.example.fragmentsapp.View
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import com.example.fragmentsapp.R
 
 
 /**

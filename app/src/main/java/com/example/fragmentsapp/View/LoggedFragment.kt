@@ -1,12 +1,16 @@
-package com.example.fragmentsapp
+package com.example.fragmentsapp.View
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.activity.OnBackPressedCallback
+import com.example.fragmentsapp.R
+import com.example.fragmentsapp.View.MoviesActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,7 +22,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [LoggedFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FavMoviesFragment : Fragment(R.layout.fragment_favorites), View.OnClickListener {
+class LoggedFragment : Fragment(R.layout.fragment_logged), View.OnClickListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -45,7 +49,15 @@ class FavMoviesFragment : Fragment(R.layout.fragment_favorites), View.OnClickLis
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorites, container, false)
+        return inflater.inflate(R.layout.fragment_logged, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.findViewById<Button>(R.id.continuar).setOnClickListener {
+            val intent = Intent(this.context, MoviesActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     companion object {

@@ -1,11 +1,9 @@
 package com.example.fragmentsapp.VM
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.fragmentsapp.model.Movie
-import com.example.fragmentsapp.model.MovieResponse
+import android.app.Application
+import androidx.lifecycle.*
+import androidx.room.Room
+import com.example.fragmentsapp.model.*
 import com.example.fragmentsapp.services.MovieApiInterface
 import com.example.fragmentsapp.services.MovieApiService
 import kotlinx.coroutines.Dispatchers
@@ -15,17 +13,23 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MovieViewModel():ViewModel(){
-
+class MovieViewModel(application: Application) : AndroidViewModel(application){
+    private val context = getApplication<Application>().applicationContext
     private val _popularMovies = MutableLiveData<List<Movie>>()
     val popularMovies = _popularMovies
 
     private val _favoriteMovies = MutableLiveData<List<Movie>>()
     val favoriteMovies = _favoriteMovies
 
+    val db = Room.databaseBuilder(
+        context,
+        MovieDatabase::class.java, "database-name"
+    ).build()
+
     private val favoriteMovieList = mutableListOf<Movie>()
 
     fun getPopular(){
+
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 getMovieData { movies : List<Movie> -> _popularMovies.value = movies }
@@ -50,4 +54,12 @@ class MovieViewModel():ViewModel(){
             }
         })
     }
+
+    suspend fun loadToDb(){
+        db.MovieDao().insertAll(_popularMovies.value!!.map { it.toDatabase() })
+    }
+    suspend fun getFav(): List<MovieEntity> {
+        return db.MovieDao().getAllFavMovies()
+    }
+
 }

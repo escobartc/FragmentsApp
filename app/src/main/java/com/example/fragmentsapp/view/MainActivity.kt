@@ -1,4 +1,4 @@
-package com.example.fragmentsapp.View
+package com.example.fragmentsapp.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.example.fragmentsapp.R
+import com.example.fragmentsapp.model.DataSource
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 addToBackStack(LoginFragment::class.java.canonicalName)
             }
         }
+        DataSource.applicationContext = applicationContext
     }
 
     override fun onStart() {

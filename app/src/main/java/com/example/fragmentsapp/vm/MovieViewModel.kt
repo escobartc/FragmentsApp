@@ -1,5 +1,6 @@
-package com.example.fragmentsapp.VM
+package com.example.fragmentsapp.vm
 
+import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.*
 import androidx.room.Room
@@ -13,23 +14,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MovieViewModel(application: Application) : AndroidViewModel(application){
-    private val context = getApplication<Application>().applicationContext
+class MovieViewModel: ViewModel() {
+    @SuppressLint("StaticFieldLeak")
     private val _popularMovies = MutableLiveData<List<Movie>>()
     val popularMovies = _popularMovies
 
     private val _favoriteMovies = MutableLiveData<List<Movie>>()
     val favoriteMovies = _favoriteMovies
-
-    /*private val db = Room.databaseBuilder(
-        context,
-        MovieDatabase::class.java, "database-name"
-    ).build()
-*/
     private val favoriteMovieList = mutableListOf<Movie>()
 
-    fun getPopular(){
 
+    fun getPopular(){
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 getMovieData { movies : List<Movie> -> _popularMovies.value = movies }
@@ -37,9 +32,16 @@ class MovieViewModel(application: Application) : AndroidViewModel(application){
         }
     }
 
-    fun updateFavorites(movie:Movie){
-       favoriteMovieList.add(movie)
-        _favoriteMovies.value = favoriteMovieList
+     fun updateFavorites(movie:Movie){
+         viewModelScope.launch {
+             withContext(Dispatchers.IO){
+                 DataSource().db.MovieDao().insertMovie(movie.toDatabase())
+             }
+         }
+    }
+
+    suspend fun setFavData(){
+        _favoriteMovies.value =  DataSource().db.MovieDao().getAllFavMovies().map { it as Movie }
     }
 
     private fun getMovieData(callback:(List<Movie>) -> Unit){
@@ -54,12 +56,6 @@ class MovieViewModel(application: Application) : AndroidViewModel(application){
             }
         })
     }
-/*
-    suspend fun loadToDb(){
-        db.MovieDao().insertAll(_popularMovies.value!!.map { it.toDatabase() })
-    }
-    suspend fun getFav(): List<MovieEntity> {
-        return db.MovieDao().getAllFavMovies()
-    }
-*/
+
+
 }

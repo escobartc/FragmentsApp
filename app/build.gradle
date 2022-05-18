@@ -56,8 +56,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     // Room
     implementation("androidx.room:room-runtime:2.4.2")
-    annotationProcessor("androidx.room:room-compiler:2.4.2")
+    //annotationProcessor("androidx.room:room-compiler:2.4.2")
     // To use Kotlin Symbolic Processing (KSP)
+    implementation("com.google.devtools.ksp:symbol-processing-api:1.6.10-1.0.2")
 
 
 

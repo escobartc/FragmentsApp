@@ -1,10 +1,10 @@
-package com.example.fragmentsapp.View
+package com.example.fragmentsapp.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.example.fragmentsapp.R
-import com.example.fragmentsapp.VM.MovieViewModel
+import com.example.fragmentsapp.vm.MovieViewModel
 import kotlinx.android.synthetic.main.activity_movies.*
 
 class MoviesActivity : AppCompatActivity(R.layout.activity_movies) {

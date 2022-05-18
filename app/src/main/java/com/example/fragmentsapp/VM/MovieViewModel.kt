@@ -21,11 +21,11 @@ class MovieViewModel(application: Application) : AndroidViewModel(application){
     private val _favoriteMovies = MutableLiveData<List<Movie>>()
     val favoriteMovies = _favoriteMovies
 
-    val db = Room.databaseBuilder(
+    /*private val db = Room.databaseBuilder(
         context,
         MovieDatabase::class.java, "database-name"
     ).build()
-
+*/
     private val favoriteMovieList = mutableListOf<Movie>()
 
     fun getPopular(){
@@ -54,12 +54,12 @@ class MovieViewModel(application: Application) : AndroidViewModel(application){
             }
         })
     }
-
+/*
     suspend fun loadToDb(){
         db.MovieDao().insertAll(_popularMovies.value!!.map { it.toDatabase() })
     }
     suspend fun getFav(): List<MovieEntity> {
         return db.MovieDao().getAllFavMovies()
     }
-
+*/
 }
